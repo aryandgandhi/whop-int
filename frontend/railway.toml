@@ -1,0 +1,12 @@
+# Settings → Config-as-code → /frontend/railway.toml
+# Settings → Root Directory → frontend
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+watchPatterns = ["/frontend/**"]
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"

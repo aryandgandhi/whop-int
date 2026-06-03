@@ -109,3 +109,78 @@ frontend/
   lib/                # api client, auth context, types, formatting
 docker-compose.yml
 ```
+
+## Deploy on Railway (one repo)
+
+Three services in one Railway project: **Postgres**, **backend**, **frontend**.
+
+### 1. Push to GitHub
+
+Railway deploys from GitHub. Commit and push your latest code first.
+
+### 2. Create the project
+
+1. [railway.app](https://railway.app) → **New Project**
+2. **Deploy from GitHub repo** → select this repo
+3. Delete or reconfigure the auto-created service at repo root (that one fails — it has no app at `/`)
+
+### 3. Add Postgres
+
+**+ New** → **Database** → **PostgreSQL** (keep the default name `Postgres`).
+
+### 4. Add backend
+
+**+ New** → **GitHub Repo** → same repo. Then in **Settings**:
+
+| Setting | Value |
+| -------- | ----- |
+| Service name | `backend` |
+| Root Directory | `backend` |
+| Config-as-code | `/backend/railway.toml` |
+| Builder | Dockerfile |
+
+**Networking** → **Generate Domain**.
+
+**Variables**:
+
+```
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+JWT_SECRET=<run: openssl rand -hex 32>
+CORS_ORIGINS=https://${{frontend.RAILWAY_PUBLIC_DOMAIN}}
+SIGNUP_GRANT_CENTS=50000
+```
+
+Deploy backend and confirm `https://<backend-domain>/api/health` returns `{"status":"ok"}`.
+
+> **First deploy:** `CORS_ORIGINS` references `frontend`, which may not exist yet. Temporarily set `CORS_ORIGINS=http://localhost:3000`, deploy, then update after frontend is live.
+
+### 5. Add frontend
+
+**+ New** → **GitHub Repo** → same repo. Then in **Settings**:
+
+| Setting | Value |
+| -------- | ----- |
+| Service name | `frontend` |
+| Root Directory | `frontend` |
+| Config-as-code | `/frontend/railway.toml` |
+| Builder | Dockerfile |
+
+**Networking** → **Generate Domain**.
+
+**Variables**:
+
+```
+NEXT_PUBLIC_API_URL=https://${{backend.RAILWAY_PUBLIC_DOMAIN}}
+```
+
+Redeploy frontend after setting the variable (it is baked in at build time).
+
+### 6. Finish CORS
+
+Set backend `CORS_ORIGINS` to `https://<your-frontend-domain>` and redeploy backend if needed.
+
+### Verify
+
+- Register at your frontend URL
+- API docs at `https://<backend-domain>/docs`
+```
