@@ -33,7 +33,7 @@ export function Navbar() {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
           <Heading size="5" weight="bold">
-            WAP
+            Whop
           </Heading>
           <Text size="2" color="gray">
             Marketplace

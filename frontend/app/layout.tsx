@@ -5,7 +5,7 @@ import "@whop/react/styles.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "WAP Marketplace",
+  title: "Whop Marketplace",
   description: "Post tasks, fund a reward pool, and get work done.",
 };
 
