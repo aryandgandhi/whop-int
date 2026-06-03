@@ -1,4 +1,4 @@
-# WAP Marketplace
+# Whop Marketplace
 
 A V1 task/bounty marketplace modeled on Whop's **workforce bounty** primitive: a user posts a task, funds a reward pool, sets how many people (slots) can be paid, and workers submit work that the poster approves until the slots fill. Styled with Frosted UI (`@whop/react`) so it looks native to Whop.
 

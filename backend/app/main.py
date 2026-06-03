@@ -10,7 +10,7 @@ from app.routers import auth, submissions, tasks, topics, users, wallet
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["240/minute"])
 
-app = FastAPI(title="WAP Marketplace API", version="1.0.0")
+app = FastAPI(title="Whop Marketplace API", version="1.0.0")
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
